@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe PvE</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 10px;
+            margin: 20px auto;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            background-color: #fff;
+            border: 2px solid #000;
+            font-size: 2em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .scoreboard {
+            margin: 20px 0;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tic Tac Toe</h1>
+        <div class="scoreboard">
+            <span id="player-score">Player: 0</span> | <span id="computer-score">Computer: 0</span>
+        </div>
+        <div>
+            <label for="difficulty">Difficulty: </label>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="normal">Normal</option>
+                <option value="impossible">Impossible</option>
+            </select>
+        </div>
+        <div class="board" id="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+        <button class="button" id="reset-button">Reset</button>
+    </div>
+
+    <script>
+        const board = document.getElementById('board');
+        const cells = document.querySelectorAll('.cell');
+        const playerScoreElement = document.getElementById('player-score');
+        const computerScoreElement = document.getElementById('computer-score');
+        const resetButton = document.getElementById('reset-button');
+        const difficultySelect = document.getElementById('difficulty');
+
+        let playerScore = 0;
+        let computerScore = 0;
+        let currentPlayer = 'X';
+        let gameActive = true;
+        let gameState = ['', '', '', '', '', '', '', '', ''];
+
+        const winningConditions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        function handleCellClick(event) {
+            const clickedCell = event.target;
+            const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+
+            if (gameState[clickedCellIndex] !== '' || !gameActive) {
+                return;
+            }
+
+            gameState[clickedCellIndex] = currentPlayer;
+            clickedCell.innerHTML = currentPlayer;
+
+            if (checkWin()) {
+                gameActive = false;
+                if (currentPlayer === 'X') {
+                    playerScore++;
+                    playerScoreElement.textContent = `Player: ${playerScore}`;
+                } else {
+                    computerScore++;
+                    computerScoreElement.textContent = `Computer: ${computerScore}`;
+                }
+                return;
+            }
+
+            if (!gameState.includes('')) {
+                gameActive = false;
+                return;
+            }
+
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            if (currentPlayer === 'O') {
+                computerMove();
+            }
+        }
+
+        function computerMove() {
+            const difficulty = difficultySelect.value;
+            let availableCells = [];
+            gameState.forEach((cell, index) => {
+                if (cell === '') {
+                    availableCells.push(index);
+                }
+            });
+
+            let move;
+            if (difficulty === 'easy') {
+                move = availableCells[Math.floor(Math.random() * availableCells.length)];
+            } else if (difficulty === 'normal') {
+                move = findBestMove(false);
+            } else if (difficulty === 'impossible') {
+                move = findBestMove(true);
+            }
+
+            gameState[move] = 'O';
+            cells[move].innerHTML = 'O';
+
+            if (checkWin()) {
+                gameActive = false;
+                computerScore++;
+                computerScoreElement.textContent = `Computer: ${computerScore}`;
+                return;
+            }
+
+            if (!gameState.includes('')) {
+                gameActive = false;
+                return;
+            }
+
+            currentPlayer = 'X';
+        }
+
+        function findBestMove(isImpossible) {
+            let bestMove;
+            let bestScore = -Infinity;
+            gameState.forEach((cell, index) => {
+                if (cell === '') {
+                    gameState[index] = 'O';
+                    let score = minimax(gameState, 0, false, isImpossible);
+                    gameState[index] = '';
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestMove = index;
+                    }
+                }
+            });
+            return bestMove;
+        }
+
+        function minimax(state, depth, isMaximizing, isImpossible) {
+            let scores = {
+                'X': -1,
+                'O': 1,
+                'tie': 0
+            };
+
+            let result = checkWinner();
+            if (result !== null) {
+                return scores[result];
+            }
+
+            if (isMaximizing) {
+                let bestScore = -Infinity;
+                state.forEach((cell, index) => {
+                    if (cell === '') {
+                        state[index] = 'O';
+                        let score = minimax(state, depth + 1, false, isImpossible);
+                        state[index] = '';
+                        bestScore = Math.max(score, bestScore);
+                    }
+                });
+                return bestScore;
+            } else {
+                let bestScore = Infinity;
+                state.forEach((cell, index) => {
+                    if (cell === '') {
+                        state[index] = 'X';
+                        let score = minimax(state, depth + 1, true, isImpossible);
+                        state[index] = '';
+                        bestScore = Math.min(score, bestScore);
+                    }
+                });
+                return bestScore;
+            }
+        }
+
+        function checkWinner() {
+            let winner = null;
+            winningConditions.forEach(condition => {
+                const [a, b, c] = condition;
+                if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
+                    winner = gameState[a];
+                }
+            });
+
+            if (!gameState.includes('') && winner === null) {
+                return 'tie';
+            } else {
+                return winner;
+            }
+        }
+
+        function checkWin() {
+            let roundWon = false;
+            for (let i = 0; i < winningConditions.length; i++) {
+                const winCondition = winningConditions[i];
+                let a = gameState[winCondition[0]];
+                let b = gameState[winCondition[1]];
+                let c = gameState[winCondition[2]];
+                if (a === '' || b === '' || c === '') {
+                    continue;
+                }
+                if (a === b && b === c) {
+                    roundWon = true;
+                    break;
+                }
+            }
+            return roundWon;
+        }
+
+        function resetGame() {
+            gameActive = true;
+            currentPlayer = 'X';
+            gameState = ['', '', '', '', '', '', '', '', ''];
+            cells.forEach(cell => cell.innerHTML = '');
+        }
+
+        cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+        resetButton.addEventListener('click', resetGame);
+    </script>
+</body>
+</html>

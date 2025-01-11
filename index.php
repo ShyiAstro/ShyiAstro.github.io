@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="css\index_style.css">
+</head>
+<body>
+    <h1>Our Pages</h1>
+    <div class="link">
+    <a href="Comp_exhib.php"><button>COMPUTER EXHIBITION</button></a>
+    <br><br>
+    <a href="UI.html"><button>CHAT BOT</button></a>
+    <br><br>
+    <a href="patreon2.html"><button>OUR PATREONS</button></a>
+    </div>
+    <div id="popup" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:80%; height:100%; background-color:white; border:2px solid #4CAF50; box-shadow:0 0 10px rgba(0,0,0,0.5); z-index:1001;">
+        <iframe src="UI.html" style="width:100%; height:100%; border:none;"></iframe>
+        <button onclick="document.getElementById('popup').style.display='none'" style="position:absolute; top:10px; right:20px; background-color: rgba(0, 0, 0, 0.5); color:white; border:none; padding:10px; cursor:pointer;">X</button>
+    </div>
+
+    <script>
+        document.querySelector('a[href="UI.html"]').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('popup').style.display = 'block';
+        });
+ 
+    </script>
+
+    <div id="popup3" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100%; height:100%; background-color:white; border:2px solid #4CAF50; box-shadow:0 0 10px rgba(0,0,0,0.5); z-index:1001;">
+        <iframe src="patreon2.html" style="width:100%; height:100%; border:none;"></iframe>
+        <button onclick="document.getElementById('popup3').style.display='none'" style="position:absolute; top:10px; right:20px; background-color: rgba(255, 255, 255, 0.2); color:white; border:none; padding:10px; cursor:pointer;">X</button>
+    </div>
+    
+    <script>
+        document.querySelector('a[href="patreon2.html"]').addEventListener('click', function(event) {
+                event.preventDefault();
+                document.getElementById('popup3').style.display = 'block';
+            });
+        </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+body {
+    text-align: center;
+    font-family: Arial, sans-serif; /* Add a default font-family */
+    background-color: #f4f4f4; /* Add a light background color for better contrast */
+    margin: 0;
+    padding: 0;
+}
+
+.link {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #333; /* Ensure link text color matches the theme */
+    margin: 10px 0; /* Add margin for spacing between links */
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #333;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2em;
+    width: 200px;
+    transition: transform 0.5s ease, background-color 0.3s ease; /* Add transition for background color */
+}
+
+button:hover {
+    transform: scale(1.1);
+    background-color: #555; /* Change background color on hover for better feedback */
+}

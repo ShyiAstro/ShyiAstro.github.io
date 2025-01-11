@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/UI_style3.css">
+    <title>Chatbot Interface</title>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            Chatbot
+            <button class="dark-mode-toggle" onclick="toggleDarkMode()">☀️</button>
+        </div>
+        <div class="chat-messages" id="chat-messages"></div>
+        <div class="chat-input">
+            <input type="text" id="chat" placeholder="Type something to chat...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const toggleDarkMode = () => {
+            document.body.classList.toggle('dark-mode');
+            const toggleButton = document.querySelector('.dark-mode-toggle');
+            toggleButton.textContent = document.body.classList.contains('dark-mode') ? '🌙' : '☀️';
+        };
+
+
+        async function sendMessage() {
+            const chatInput = document.getElementById('chat');
+            const chatMessages = document.getElementById('chat-messages');
+
+            if (chatInput.value.trim() !== '') {
+                const userMessage = document.createElement('div');
+                userMessage.classList.add('message', 'user');
+                userMessage.innerHTML = `
+                    <img src="images/you.jpg" alt="you.jpg">
+                    <div class="message-text">${chatInput.value}</div>
+                `;
+                chatMessages.appendChild(userMessage);
+
+                const botTyping = document.createElement('div');
+                botTyping.classList.add('message', 'bot', 'bot-typing');
+                botTyping.innerHTML = `
+                    <img src="chad.jpg" alt="Bot Avatar">
+                    <div class="message-text">Bot is typing...</div>
+                `;
+                chatMessages.appendChild(botTyping);
+
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                try {
+                    const response = await fetch('chat.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: chatInput.value })
+                    });
+
+                    const data = await response.json();
+                    chatMessages.removeChild(botTyping);
+
+                    const botMessage = document.createElement('div');
+                    botMessage.classList.add('message', 'bot');
+                    botMessage.innerHTML = `
+                        <img src="images/chad.jpg" alt="Bot Avatar">
+                        <div class="message-text">${data.response || "Error: No response"}</div>
+                    `;
+                    chatMessages.appendChild(botMessage);
+                } catch (error) {
+                    chatMessages.removeChild(botTyping);
+
+                    const errorMessage = document.createElement('div');
+                    errorMessage.classList.add('message', 'bot');
+                    errorMessage.innerHTML = `
+                        <img src="chad.jpg" alt="Bot Avatar">
+                        <div class="message-text">Error: Could not connect to the server.</div>
+                    `;
+                    chatMessages.appendChild(errorMessage);
+                }
+
+                chatInput.value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

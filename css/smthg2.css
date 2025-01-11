@@ -1,0 +1,74 @@
+.new h2 {
+    padding: 20px;
+    color: black;
+    text-align: center;
+    font-family: 'Courier New';
+}
+
+.para_7 {
+    text-align: center;
+    color: black;
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.para_7 h2, .para_8 h2 {
+    color: black;
+    font-family: 'Courier New';
+    text-align: center;
+}
+
+.para_1 {
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.para_1 p {
+    text-align: center;
+    color: black;
+    font-size: x-large;
+    margin: 10px 0;
+    font-family: Georgia;
+}
+
+.para_2, .para_3, .para_4, .para_5, .para_6, .para_8 {
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Verdana;
+}
+
+.para_2 p, .para_3 p, .para_4 p, .para_5 p, .para_6 p, .para_8 p {
+    margin: 10px 0;
+    font-size: large;
+}
+
+.para_2 ul, .para_3 ul, .para_4 ul, .para_5 ul {
+    padding: 0;
+}
+
+.para_2 li, .para_3 li, .para_4 li, .para_5 li {
+    margin: 10px 0;
+}
+
+.para_2 li p, .para_3 li p, .para_4 li p, .para_5 li p {
+    margin: 0;
+}
+ul {
+    text-align: center;
+    list-style-type: none;
+}
+
+
+h3 {
+    color: rgb(45, 140, 196);
+    font-size: x-large;
+    font-family: Georgia;
+}

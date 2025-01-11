@@ -14,12 +14,12 @@
 </div>
     <div class="dashboard">
         <button id="toggleButton">☰</button>
-        <a href="index.php"><button>HOME</button></a>
+        <a href="index.html"><button>HOME</button></a>
         <a href="UI.html"><button>CHAT BOT</button></a>
         <a href="patreon2.html"><button>OUR PATREONS</button></a>
-        <a href="tictactoepvp.php"><button>TICTACTOE PVP</button></a>
-        <a href="tictactoepve.php"><button>TICTACTOE PVE</button></a>
-        <a href="rate_us.php"><button>RATE US</button></a>
+        <a href="tictactoepvp.html"><button>TICTACTOE PVP</button></a>
+        <a href="tictactoepve.html"><button>TICTACTOE PVE</button></a>
+        <a href="rate_us.html"><button>RATE US</button></a>
         <button id="musicButton">Music On</button>
         <script>
             document.getElementById('toggleButton').addEventListener('click', function() {
@@ -50,12 +50,12 @@
         </script>
 
         <div id="popup2" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:80%; height:80%; background-color:white; border:2px solid #4CAF50; box-shadow:0 0 10px rgba(0,0,0,0.5); z-index:1001;">
-            <iframe src="rate_us.php" style="width:100%; height:100%; border:none;"></iframe>
+            <iframe src="rate_us.html" style="width:100%; height:100%; border:none;"></iframe>
             <button onclick="document.getElementById('popup2').style.display='none'" style="position:absolute; top:10px; right:20px; background-color: rgba(255, 255, 255, 0.2); color:black; border:none; padding:10px; cursor:pointer;">X</button>
         </div>
     
         <script>
-            document.querySelector('.dashboard a[href="rate_us.php"]').addEventListener('click', function(event) {
+            document.querySelector('.dashboard a[href="rate_us.html"]').addEventListener('click', function(event) {
                 event.preventDefault();
                 document.getElementById('popup2').style.display = 'block';
             });
